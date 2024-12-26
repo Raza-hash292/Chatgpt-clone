@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT Clone</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a1a;
+            margin: 0;
+            padding: 20px;
+        }
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            background-color: #2b2b2b;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .nav a {
+            color: #00ffcc;
+            text-decoration: none;
+            padding: 10px;
+        }
+        .nav a:hover {
+            text-decoration: underline;
+        }
+        .chat-container {
+            max-width: 600px;
+            margin: auto;
+            background: #2b2b2b;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+        .chat-window {
+            height: 400px;
+            overflow-y: auto;
+            padding: 15px;
+            border-bottom: 2px solid transparent;
+            background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #7fff00, #00ff00, #00ff7f, #00ffff, #007fff, #0000ff, #7f00ff, #ff00ff, #ff007f);
+            background-size: 300% 100%;
+            animation: rainbow 5s linear infinite;
+        }
+        .chat-input {
+            display: flex;
+            padding: 10px;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #00ffcc;
+            border-radius: 5px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .chat-input input:focus {
+            border-color: #00ffcc;
+            outline: none;
+            box-shadow: 0 0 5px #00ffcc;
+        }
+        .chat-input button {
+            padding: 12px;
+            margin-left: 10px;
+            border: none;
+            background-color: #00ffcc;
+            color: black;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+        }
+        .chat-input button:hover {
+            background-color: #00cc99;
+            transform: scale(1.05);
+            box-shadow: 0 0 10px #00ffcc;
+        }
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            animation: slideIn 0.5s;
+        }
+        .message.user {
+            background-color: #00ffcc;
+            color: black;
+            align-self: flex-end;
+            box-shadow: 0 0 10px #00ffcc;
+        }
+        .message.bot {
+            background-color: #e0e0e0;
+            color: black;
+            align-self: flex-start;
+            box-shadow: 0 0 10px #ff007f;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .saved-chats {
+            margin-top: 20px;
+            background-color: #2b2b2b;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .faq-button {
+            margin: 5px;
+            padding: 10px;
+            background-color: #00cc99;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <div>
+            <a href="#">ChatGPT v1.0</a>
+            <a href="#">ChatGPT v2.0</a>
+            <a href="#">ChatGPT v3.0</a>
+        </div>
+        <div>
+            <img src="chat-icon.png" alt="Chat Icon" style="width: 30px; height: 30px;">
+        </div>
+    </div>
+    <div class="chat-container">
+        <div class="chat-window" id="chat-window">
+            <div class="message bot">Hello! How can I assist you today?</div>
+            <div class="message user">I want to know about the weather.</div>
+            <div class="message bot">Sure! The weather is sunny today.</div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="user-input" placeholder="Type your message here..." />
+            <button id="send-button">Send</button>
+        </div>
+        <div class="saved-chats" id="saved-chats">
+            <h4>Saved Chats</h4>
+            <div class="message bot">Chat 1: How to learn JavaScript?</div>
+            <div class="message bot">Chat 2: What is the weather today?</div>
+            <div class="message bot">Chat 3: Tell me a joke.</div>
+        </div>
+        <div class="faq-section">
+            <h4>Frequently Asked Questions</h4>
+            <button class="faq-button" onclick="sendFAQ('What is Rehan School?')">What is Rehan School?</button>
+            <button class="faq-button" onclick="sendFAQ('What programs does Rehan School offer?')">What programs does Rehan School offer?</button>
+            <button class="faq-button" onclick="sendFAQ('What is the admission process?')">What is the admission process?</button>
+            <button class="faq-button" onclick="sendFAQ('What are the school hours?')">What are the school hours?</button>
+            <button class="faq-button" onclick="sendFAQ('Is there a uniform policy?')">Is there a uniform policy?</button>
+            <button class="faq-button" onclick="sendFAQ('What extracurricular activities are available?')">What extracurricular activities are available?</button>
+            <button class="faq-button" onclick="sendFAQ('How can I contact the school?')">How can I contact the school?</button>
+            <button class="faq-button" onclick="sendFAQ('What is the school’s philosophy?')">What is the school’s philosophy?</button>
+            <button class="faq-button" onclick="sendFAQ('Are there any scholarships available?')">Are there any scholarships available?</button>
+            <button class="faq-button" onclick="sendFAQ('What is the student-to-teacher ratio?')">What is the student-to-teacher ratio?</button>
+            <button class="faq-button" onclick="sendFAQ('What is the school’s location?')">What is the school’s location?</button>
+            <button class="faq-button" onclick="sendFAQ('What age groups does the school cater to?')">What age groups does the school cater to?</button>
+            <button class="faq-button" onclick="sendFAQ('What is the curriculum followed?')">What is the curriculum followed?</button>
+            <button class="faq-button" onclick="sendFAQ('Are there any after-school programs?')">Are there any after-school programs?</button>
+            <button class="faq-button" onclick="sendFAQ('What is the school’s policy on bullying?')">What is the school’s policy on bullying?</button>
+            <button class="faq-button" onclick="sendFAQ('How does the school handle emergencies?')">How does the school handle emergencies?</button>
+            <button class="faq-button" onclick="sendFAQ('What are the tuition fees?')">What are the tuition fees?</button>
+            <button class="faq-button" onclick="sendFAQ('Is transportation provided?')">Is transportation provided?</button>
+            <button class="faq-button" onclick="sendFAQ('What is the school’s approach to technology?')">What is the school’s approach to technology?</button>
+            <button class="faq-button" onclick="sendFAQ('How can parents get involved?')">How can parents get involved?</button>
+            <button class="faq-button" onclick="sendFAQ('What is the school’s policy on homework?')">What is the school’s policy on homework?</button>
+            <button class="faq-button" onclick="sendFAQ('Are there any special education services?')">Are there any special education services?</button>
+            <button class="faq-button" onclick="sendFAQ('What is the school’s policy on field trips?')">What is the school’s policy on field trips?</button>
+            <button class="faq-button" onclick="sendFAQ('How does the school support mental health?')">How does the school support mental health?</button>
+            <button class="faq-button" onclick="sendFAQ('What is the dress code?')">What is the dress code?</button>
